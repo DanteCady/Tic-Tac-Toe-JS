@@ -1,0 +1,48 @@
+/* Class Styles */
+
+body {
+  font-family: 'Arial', sans-serif;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  background: linear-gradient(to right, #74ebd5, #ACB6E5);
+  color: #333;
+}
+.cell{
+    background-color: #fff;
+    border: 2px solid #333;
+    font-size: 2em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    height: 100px;
+    width: 100px;
+}
+.cell:hover{
+    background-color: #f0f0f0;
+}
+
+
+/* ID Styles */
+
+#gameBoard {
+  display: grid;
+  grid-template-columns: repeat(3, 100px);
+  grid-template-rows: repeat(3, 100px);
+  gap: 10px;
+}
+
+
+/* Media Query Styles */
+
+@media (max-width: 768px) {
+  #gameBoard {
+    grid-template-columns: repeat(3, 80px);
+    grid-template-rows: repeat(3, 80px);
+  }
+}
