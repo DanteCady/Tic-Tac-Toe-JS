@@ -4,6 +4,17 @@ let currentPlayer = 'X' // Player X always starts first
 let gameBoard = ['', '', '', '', '', '', '', '', ''] // 3x3 game board
 let gameActive = true
 
+const winningConditions = [ 
+    [0, 1, 2], // Top row
+    [3, 4, 5], // Middle row
+    [6, 7, 8], // Bottom row
+    [0, 3, 6], // Left column
+    [1, 4, 7], // Middle column
+    [2, 5, 8], // Right column
+    [0, 4, 8], // Diagonal from top left to bottom right
+    [2, 4, 6]  // Diagonal from top right to bottom left
+]
+
 
 // Functions
 
@@ -18,12 +29,6 @@ const playerTurn = (clickCellIndex) => {
     currentPlayer = currentPlayer === 'X' ? 'O' : 'X'
 }    
 
-// Event Listeners
-const cells = document.querySelectorAll('.cell') // Get all cells in the game board
-cells.forEach(cell => {
- cell.addEventListener('click', cellClicked, false)   
-})
-
 // Function to handle cell click event
 const cellClicked = (clickedCellEvent) => { 
     const clickedCell = clickedCellEvent.target // Get the clicked cell
@@ -37,11 +42,45 @@ const cellClicked = (clickedCellEvent) => {
     updateGameBoard()
 }    
 
+// Event Listeners
+const cells = document.querySelectorAll('.cell') // Get all cells in the game board
+cells.forEach(cell => {
+ cell.addEventListener('click', cellClicked, false) 
+})
+
 // Function to update the game board
 const updateGameBoard = () => {
     // Update the game board with the current player's mark
-    for (let i = 0; i < gameBoard.length; i++) {
-        cells[i].innerText = gameBoard[i]
+    for (let i = 0; i < gameBoard.length; i++) { // Loop through the game board
+        cells[i].innerText = gameBoard[i] // Update the cell with the current player's mark
     }    
 }    
 
+// Function to check for a winner
+const checkWinner = () => {
+    // Check if the current player has won the game
+    let roundWon = false
+    // Loop through the winning conditions
+    for (let i = 0; i< winningConditions.length; i++) {
+        const [a, b, c] = winningConditions[i] 
+        // Check if the current player has marked all the cells in a winning condition
+        if( gameBoard[a] && gameBoard[a] === gameBoard[b] && gameBoard[a] === gameBoard[c]) {
+            roundWon = true
+            break
+        } 
+    }
+    // Return the result of the check 
+    if (roundWon) {
+        announceWinner(currentPlayer)
+        gameActive = false
+        return
+    }
+    // Check if the game is a draw
+    let rondDraw = !gameBoard.includes('')
+    // Return the result of the check
+    if (rondDraw) {
+        announceDraw()
+        gameActive = false
+        return
+    }
+}
