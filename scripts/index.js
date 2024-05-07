@@ -56,12 +56,25 @@ const updateGameBoard = () => {
     }    
 }    
 
+// Function to announce the winner
+const announceWinner = (player) => {
+    const message = document.getElementById('gameStatus')
+    message.innerText = `${player} wins!`
+}
+
+
+// Function to announce a draw
+const announceDraw = () => {
+    const message = document.getElementById('gameStatus')
+    message.innerText = `It is a draw!`
+}
+
 // Function to check for a winner
 const checkWinner = () => {
     // Check if the current player has won the game
     let roundWon = false
     // Loop through the winning conditions
-    for (let i = 0; i< winningConditions.length; i++) {
+    for (let i = 0; i < winningConditions.length; i++) {
         const [a, b, c] = winningConditions[i] 
         // Check if the current player has marked all the cells in a winning condition
         if( gameBoard[a] && gameBoard[a] === gameBoard[b] && gameBoard[a] === gameBoard[c]) {
@@ -73,14 +86,30 @@ const checkWinner = () => {
     if (roundWon) {
         announceWinner(currentPlayer)
         gameActive = false
+        console.log('Player ' + currentPlayer + ' has won!')
         return
     }
     // Check if the game is a draw
-    let rondDraw = !gameBoard.includes('')
+    let roundDraw = !gameBoard.includes('')
     // Return the result of the check
-    if (rondDraw) {
+    if (roundDraw) {
         announceDraw()
         gameActive = false
         return
     }
 }
+
+// Event listener for the reset button
+const resetButton = document.getElementById('resetButton');
+resetButton.addEventListener('click', resetGame, false);
+
+// Function to reset the game
+function resetGame() {
+    gameBoard = ['', '', '', '', '', '', '', '', ''];
+    gameActive = true;
+    currentPlayer = 'X';
+    cells.forEach(cell => {
+        cell.innerText = '';
+    });
+    document.getElementById('gameStatus').innerText = '';
+  }
